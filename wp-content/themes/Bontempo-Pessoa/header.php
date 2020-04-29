@@ -1,34 +1,13 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html <?php language_attributes(); ?> >
 <head>
+    <meta charset="<?php bloginfo('charset'); ?>">
     <?php wp_head(); ?>  <?php // CARREGA OS ARQUIVOS CSS COLOCADOS NO FUNCTIONS.PHP ?>
 </head>
-<body>
+<body <?php body_class(); ?>> <?php // Adiciona classes no body dependendo da pagina que estamos! e uma funcao auxiliar boa ?>
 <h1>HEADER.PHP</h1>
-<ul>
-    <li>
-        <a href="<?php echo site_url(); ?>">
-            Home
-        </a>
-    </li>
-    <li>
-        <a href="<?php echo site_url('sobre'); ?>">
-            Sobre
-        </a>
-    </li>
-    <li>
-        <a href="<?php echo site_url('cases'); ?>">
-            Cases
-        </a>
-    </li>
-    <li>
-        <a href="<?php echo site_url('duvidas'); ?>">
-            Dúvidas
-        </a>
-    </li>
-    <li>
-        <a href="<?php echo site_url('contato'); ?>">
-            Contato
-        </a>
-    </li>
-</ul>
+<?php
+    wp_nav_menu(array(
+        'theme_location' => 'mainMenu'
+    ));
+?>

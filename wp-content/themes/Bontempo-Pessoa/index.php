@@ -1,39 +1,25 @@
 <?php get_header() ?>
 
-<?php bloginfo('name') ?>
-<?php bloginfo('description') ?>
-
-<hr>
-<img src="<?php echo get_theme_file_uri('assets/image/test.jpg') ?>" alt="">
-<hr>
+<h1>THIS IS THE BLOG SCREEN</h1>
 
 
-<h1>Primeira Forma</h1>
-<?php foreach (get_posts() as $post): ?>
-
-    <h1>Titulo: <?php echo $post->post_title ?></h1>
-    <h2><?php echo $post->post_author ?></h2>
-    <div>
-        <?php echo $post->post_content ?>
-    </div>
-    <a href="<?php echo $post->guid ?>">LINK</a>
-
-<?php endforeach; ?>
-<hr>
-
-<h1>Segunda forma</h1>
+<h1>BLOG</h1>
 
 <?php while (have_posts()): ?>
     <?php the_post(); ?>
     <h1>Titulo: <?php the_title() ?></h1>
-    <h2><?php the_author() ?></h2>
     <div>
-        <?php the_content(); ?>
+        Content = <?php the_content(); ?>
     </div>
+    Excerpt = <?php the_excerpt(); ?>
     <a href="<?php the_permalink(); ?>">LINK</a>
+    <?php the_author_posts_link(); ?>
+    <?php the_time('n.j.y'); ?>
+    <?php echo get_the_category_list() ?>
 <?php endwhile; ?>
 <hr>
-
+<hr>
+<?php echo paginate_links() ?>
 
 <?php get_footer(); ?>
 

@@ -16,6 +16,7 @@ add_action('wp_enqueue_scripts', 'loadFiles'); // Primeiro parametro é o evento
 
 
 function loadFeatures() {
+    register_nav_menu('mainMenu', 'Main Menu');
     add_theme_support('title-tag'); // title-tag: adiciona a tag title com os respectivos titulos de cada pagina e blog
 }
 
