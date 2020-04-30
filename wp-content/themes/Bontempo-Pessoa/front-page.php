@@ -1,5 +1,12 @@
 <?php get_header() ?>
 
+<div id="main-carousel">
+    <div class="carousel-cell">...</div>
+    <div class="carousel-cell">...</div>
+    <div class="carousel-cell">...</div>
+    ...
+</div>
+
 <?php bloginfo('name') ?>
 <?php bloginfo('description') ?>
 

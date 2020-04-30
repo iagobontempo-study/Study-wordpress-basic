@@ -12,11 +12,6 @@ function pageBanner() {
 
 
 
-
-
-
-
-
 //Arquivo utilizado para carregar arquivos
 
 // DICA: usar a função microtime() durante desenvolvimento no lugar do parametro de versão
@@ -25,9 +20,13 @@ function loadFiles()
 {
     //CSS - primeiro parametro é um nome escolhido por mim e segundo parametro é a URL. (no caso já existe uma função WP para pegar o style.css principal
     wp_enqueue_style('mainStyles', get_stylesheet_uri()); // Carrega CSS
+    wp_enqueue_style('bootstrap', get_theme_file_uri('/node_modules/bootstrap/dist/css/bootstrap.min.css') );
+    wp_enqueue_style('flickity', get_theme_file_uri('/node_modules/flickity/dist/flickity.min.css') );
 
     //JS - primeiro parametro é um nome escolhido por mim, segundo é a url, terceiro é se este JS tem dependencias, quarto é a versão e quinto colocar true para carregar o arquivo no footer
-    wp_enqueue_script('mainJS', get_theme_file_uri('assets/js/test.js'), null, '1.0', true);
+    wp_enqueue_script('mainJS', get_theme_file_uri('assets/js/main.js'), null, '1.0', true);
+    wp_enqueue_script('flickity', get_theme_file_uri('/node_modules/flickity/dist/flickity.pkgd.min.js') );
+    wp_enqueue_script('carrousel', get_theme_file_uri('/assets/js/carrousel.js') );
 }
 
 add_action('wp_enqueue_scripts', 'loadFiles'); // Primeiro parametro é o evento que o wordpress aceita, segundo param é o nome que eu quero dar
