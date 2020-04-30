@@ -16,8 +16,10 @@ get_the_ID() // pega o ID da pagina
 wp_get_post_parent_id(get_the_ID()) //pega o ID do pai da pagina
 wp_list_pages() // pega todas as paginas se não passado parametros
 wp_nav_menu(array('theme_location' => 'mainMenu'))) // Cria menus dinamicos no wp-admin... lembrar que precisa ser adicionado no FUNCTIONS um evento tipo register_nav_menu('mainMenu', 'Main Menu');
-
-
+get_post_type() === 'product' // Usado para checar se o post type e igual a string - Usado para fazer menu ficar selecionado
+WP_Query() // Faz uma query no banco de dados
+is_Admin() // checa se voce está na view da APP
+get_template_part() // Obtem arquivo php de template
 
 get_theme_file_uri()
 
@@ -35,3 +37,11 @@ TAG
 Importante!!
 
 - Se a função começar com get quer dizer que você precisa retornar com ECHO, caso contrário ele já te retorna printado
+
+- Obter dados com WP_Query é bom para adicionar itens que não são especificos com suas páginas. Ex: pegar produtos na home, pegar blog post na home, pegar servicos na home...
+
+
+
+// Bons pluguins
+
+- REGENERATE THUMBNAILS
