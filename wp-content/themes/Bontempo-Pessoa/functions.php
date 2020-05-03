@@ -1,15 +1,15 @@
 <?php
 
+// Importando arquivo
+require_once('library/API/search.php');
+
 
 
 // NESTE ARQUIVO POSSO ADICIONAR NOVAS FUNCÔES
-function pageBanner() {
+function pageBanner()
+{
     return "<div>OPALELE PAGEBANNER FUNC</div>";
 }
-
-
-
-
 
 
 //Arquivo utilizado para carregar arquivos
@@ -20,13 +20,18 @@ function loadFiles()
 {
     //CSS - primeiro parametro é um nome escolhido por mim e segundo parametro é a URL. (no caso já existe uma função WP para pegar o style.css principal
     wp_enqueue_style('mainStyles', get_stylesheet_uri()); // Carrega CSS
-    wp_enqueue_style('bootstrap', get_theme_file_uri('/node_modules/bootstrap/dist/css/bootstrap.min.css') );
-    wp_enqueue_style('flickity', get_theme_file_uri('/node_modules/flickity/dist/flickity.min.css') );
+    wp_enqueue_style('bootstrap', get_theme_file_uri('/node_modules/bootstrap/dist/css/bootstrap.min.css'));
+    wp_enqueue_style('flickity', get_theme_file_uri('/node_modules/flickity/dist/flickity.min.css'));
 
     //JS - primeiro parametro é um nome escolhido por mim, segundo é a url, terceiro é se este JS tem dependencias, quarto é a versão e quinto colocar true para carregar o arquivo no footer
     wp_enqueue_script('mainJS', get_theme_file_uri('assets/js/main.js'), null, '1.0', true);
-    wp_enqueue_script('flickity', get_theme_file_uri('/node_modules/flickity/dist/flickity.pkgd.min.js') );
-    wp_enqueue_script('carrousel', get_theme_file_uri('/assets/js/carrousel.js') );
+    wp_enqueue_script('flickity', get_theme_file_uri('/node_modules/flickity/dist/flickity.pkgd.min.js'));
+    wp_enqueue_script('carrousel', get_theme_file_uri('/assets/js/carrousel.js'));
+
+    // Passando variaveis para dentro do arquivo main.js
+    wp_localize_script('mainJS', 'config', array(
+        'baseUrl' => get_site_url()
+    ));
 }
 
 add_action('wp_enqueue_scripts', 'loadFiles'); // Primeiro parametro é o evento que o wordpress aceita, segundo param é o nome que eu quero dar
@@ -43,12 +48,12 @@ function loadFeatures()
 
 add_action('after_setup_theme', 'loadFeatures');
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function postTypes()
 {
     register_post_type('product', array(
+        'show_in_rest' => true, // Permite que exista uma rota para acessar na API
         'supports' => array('title', 'editor', 'excerpt', 'thumbnail'), // Diz quais tipos de campos o produto possui suporte, no caso adicionamos o 'excerpt' que é uma descrição... 'custom-fields' habilita custom-fields...
         'rewrite' => array('slug' => 'produtos'), //Muda a URL do tipo de post
         'has_archive' => true, // Diz que tem uma pagina de listagem
@@ -82,4 +87,16 @@ function ajustPageQuery($query)
 
 add_action('pre_get_posts', 'ajustPageQuery'); // Utilizado para ajustar e filtrar do jeito que quisermos as queries das paginas (Assim não precisamos criar custom query no front, pois ja teremos acesso com the_post();
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+function customRestApi() {
+    // Adiciona campo na API que vem com WORDPRESS! ou seja http://localhost/wordpress/wp-json/wp/v2/posts irá receber um campo TESTE com ALOKA dentro;
+    register_rest_field('post', 'teste', array(
+        'get_callback' => function() {
+            return 'ALOKA';
+        }
+    ));
+
+}
+
+add_action('rest_api_init', 'customRestApi');
