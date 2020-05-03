@@ -1,7 +1,12 @@
 <?php
+//Arquivo utilizado para carregar arquivos
 
 // Importando arquivo
 require_once('library/API/search.php');
+require_once('library/API/form.php');
+
+// CUSTOM LOGIN
+require_once('library/login.php');
 
 
 
@@ -11,10 +16,7 @@ function pageBanner()
     return "<div>OPALELE PAGEBANNER FUNC</div>";
 }
 
-
-//Arquivo utilizado para carregar arquivos
-
-// DICA: usar a função microtime() durante desenvolvimento no lugar do parametro de versão
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function loadFiles()
 {
@@ -25,12 +27,15 @@ function loadFiles()
 
     //JS - primeiro parametro é um nome escolhido por mim, segundo é a url, terceiro é se este JS tem dependencias, quarto é a versão e quinto colocar true para carregar o arquivo no footer
     wp_enqueue_script('mainJS', get_theme_file_uri('assets/js/main.js'), null, '1.0', true);
+    wp_enqueue_script('axios', get_theme_file_uri('/node_modules/axios/dist/axios.min.js'));
     wp_enqueue_script('flickity', get_theme_file_uri('/node_modules/flickity/dist/flickity.pkgd.min.js'));
     wp_enqueue_script('carrousel', get_theme_file_uri('/assets/js/carrousel.js'));
 
     // Passando variaveis para dentro do arquivo main.js
-    wp_localize_script('mainJS', 'config', array(
-        'baseUrl' => get_site_url()
+    wp_localize_script('mainJS', 'site', array(
+        'baseUrl' => get_site_url(),
+        'api' => get_site_url() . '/api/v1/',
+        'wpApi' => get_site_url() . '/api/wp/v2/'
     ));
 }
 
@@ -50,10 +55,23 @@ add_action('after_setup_theme', 'loadFeatures');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// RENOMEANDO A ROTA DE API DO WORDPRESS de wp-json para api
+
+function apiRename($slug)
+{
+    return 'api';
+}
+add_filter( 'rest_url_prefix', 'apiRename');
+flush_rewrite_rules(true);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 function postTypes()
 {
     register_post_type('product', array(
         'show_in_rest' => true, // Permite que exista uma rota para acessar na API
+        'capability_type' => 'product', // Permite que ao usar o PLUGIN MEMBERS, você controle o que pode ser editado por cada pessoa - AO FAZER ISSO LEMBRE QUE O MENU SOME DO ADMIN, ou seja, tem que dar a permissão no PAINEL DEU USERS
+        'map_meta_cap' => true, // Isso faz com que o capability_type funcione
         'supports' => array('title', 'editor', 'excerpt', 'thumbnail'), // Diz quais tipos de campos o produto possui suporte, no caso adicionamos o 'excerpt' que é uma descrição... 'custom-fields' habilita custom-fields...
         'rewrite' => array('slug' => 'produtos'), //Muda a URL do tipo de post
         'has_archive' => true, // Diz que tem uma pagina de listagem
@@ -66,6 +84,22 @@ function postTypes()
             'edit_item' => 'Editar produto',
             'all_items' => 'Todos produtos',
             'singular_name' => 'Produto',
+        )
+
+    ));
+
+    register_post_type('message', array(
+        'show_in_rest' => false, // Setado para false pois foi criado uma rota especifica para POST em library/api/form.php
+        'capability_type' => 'message', // Permite que ao usar o PLUGIN MEMBERS, você controle o que pode ser editado por cada pessoa - AO FAZER ISSO LEMBRE QUE O MENU SOME DO ADMIN, ou seja, tem que dar a permissão no PAINEL DEU USERS
+        'map_meta_cap' => true, // Isso faz com que o capability_type funcione
+        'supports' => array('title'), // Diz quais tipos de campos o produto possui suporte, no caso adicionamos o 'excerpt' que é uma descrição... 'custom-fields' habilita custom-fields...
+        'public' => false, // Torna o tipo do post publico para todos verem
+        'show_ui' => true, // PARA MOSTRAR NA TELA ADMIN
+        'menu_icon' => 'dashicons-email-alt', //https://developer.wordpress.org/resource/dashicons/#migrate
+        'labels' => array(
+            'name' => 'Mensagens',
+            'all_items' => 'Todos produtos',
+            'singular_name' => 'Message',
         )
 
     ));

@@ -45,3 +45,4 @@ Importante!!
 // Bons pluguins
 
 - REGENERATE THUMBNAILS
+- MEMBERS by MemberPress AULA 70 e 71
