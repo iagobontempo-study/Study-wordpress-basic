@@ -22,11 +22,9 @@ function sendForm(event) {
         title: name.value,
         telefone: telefone.value,
         email: email.value
-    })
-    .then(function (response) {
-       console.log(response);
-    })
-    .catch(function (error) {
-       console.log(error);
+    }).then(function (response) {
+        console.log(response);
+    }).catch(function (error) {
+        console.log(error);
     });
 }

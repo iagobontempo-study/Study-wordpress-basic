@@ -14,7 +14,7 @@
 <img src="<?php echo get_theme_file_uri('assets/image/test.jpg') ?>" alt="">
 <hr>
 
-//CUSTOM FUNCTION
+CUSTOM FUNCTION
 <?php echo pageBanner(); ?>
 
 //TEMPLATE PARTS
@@ -46,7 +46,6 @@
 
     <?php endwhile; ?>
 </div>
-
 
 <h1>BLOG</h1>
 
